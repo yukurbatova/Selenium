@@ -18,7 +18,6 @@ public class PositiveTest {
 
     @BeforeAll
     static void setUpAll() {
-        //System.setProperty("webdriver.chrome.driver", "./driver/win/chromedriver.exe");
         WebDriverManager.chromedriver().setup();
     }
 
@@ -29,6 +28,7 @@ public class PositiveTest {
         options.addArguments("--no-sandbox");
         options.addArguments("--headless");
         driver = new ChromeDriver(options);
+        driver.get("http://localhost:9999");
     }
 
     @AfterEach
@@ -39,7 +39,6 @@ public class PositiveTest {
 
     @Test
     void shouldSurnameWithSpaceTest() {
-        driver.get("http://localhost:9999");
         driver.findElement(cssSelector("[data-test-id=name] .input__control")).sendKeys("Курбатова Юлия");
         driver.findElement(cssSelector("[data-test-id=phone] .input__control")).sendKeys("+79038190000");
         driver.findElement(cssSelector("[data-test-id=agreement] .checkbox__box")).click();
@@ -52,21 +51,7 @@ public class PositiveTest {
 
     @Test
     void shouldSurnameWithHyphenTest() {
-        driver.get("http://localhost:9999");
         driver.findElement(cssSelector("[data-test-id=name] .input__control")).sendKeys("Курбатова-Минакова Юлия");
-        driver.findElement(cssSelector("[data-test-id=phone] .input__control")).sendKeys("+79038190000");
-        driver.findElement(cssSelector("[data-test-id=agreement] .checkbox__box")).click();
-        driver.findElement(cssSelector("button")).click();
-        WebElement messageElement = driver.findElement(cssSelector("[data-test-id=order-success]"));
-        String actualMessage = messageElement.getText();
-        String expectedMessage = "Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время.";
-        Assertions.assertEquals(expectedMessage, actualMessage.strip());
-    }
-
-    @Test
-    void shouldMinSurnameTest() {
-        driver.get("http://localhost:9999");
-        driver.findElement(cssSelector("[data-test-id=name] .input__control")).sendKeys("К");
         driver.findElement(cssSelector("[data-test-id=phone] .input__control")).sendKeys("+79038190000");
         driver.findElement(cssSelector("[data-test-id=agreement] .checkbox__box")).click();
         driver.findElement(cssSelector("button")).click();

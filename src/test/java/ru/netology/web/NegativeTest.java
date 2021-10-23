@@ -18,7 +18,6 @@ public class NegativeTest {
 
     @BeforeAll
     static void setUpAll() {
-        //System.setProperty("webdriver.chrome.driver", "./driver/win/chromedriver.exe");
         WebDriverManager.chromedriver().setup();
     }
 
@@ -29,6 +28,7 @@ public class NegativeTest {
         options.addArguments("--no-sandbox");
         options.addArguments("--headless");
         driver = new ChromeDriver(options);
+        driver.get("http://localhost:9999");
     }
 
     @AfterEach
@@ -39,7 +39,6 @@ public class NegativeTest {
 
     @Test
     void shouldEmptyAllFieldsTest() {
-        driver.get("http://localhost:9999");
         driver.findElement(cssSelector("button")).click();
         WebElement messageElement = driver.findElement(cssSelector("[data-test-id=name] .input__sub"));
         String actualMessage = messageElement.getText();
@@ -49,7 +48,6 @@ public class NegativeTest {
 
     @Test
     void shouldEmptyPhoneTest() {
-        driver.get("http://localhost:9999");
         driver.findElement(cssSelector("[data-test-id=name] .input__control")).sendKeys("Курбатова Юлия");
         driver.findElement(cssSelector("[data-test-id=agreement] .checkbox__box")).click();
         driver.findElement(cssSelector("button")).click();
@@ -61,7 +59,6 @@ public class NegativeTest {
 
     @Test
     void shouldEmptySurnameTest() {
-        driver.get("http://localhost:9999");
         driver.findElement(cssSelector("[data-test-id=phone] .input__control")).sendKeys("+79038190000");
         driver.findElement(cssSelector("[data-test-id=agreement] .checkbox__box")).click();
         driver.findElement(cssSelector("button")).click();
@@ -73,19 +70,17 @@ public class NegativeTest {
 
     @Test
     void shouldEmptyAgreementTest() {
-        driver.get("http://localhost:9999");
         driver.findElement(cssSelector("[data-test-id=name] .input__control")).sendKeys("Курбатова Юлия");
         driver.findElement(cssSelector("[data-test-id=phone] .input__control")).sendKeys("+79038190000");
         driver.findElement(cssSelector("button")).click();
-        WebElement messageElement = driver.findElement(cssSelector("[data-test-id=agreement] .checkbox__text"));
-        String actualMessage = messageElement.getCssValue("color");
-        String expectedMessage = "rgba(255, 92, 92, 1)";
+        WebElement messageElement = driver.findElement(cssSelector("[data-test-id=agreement].input_invalid"));
+        String actualMessage = messageElement.getText();
+        String expectedMessage = "Я соглашаюсь с условиями обработки и использования моих персональных данных и разрешаю сделать запрос в бюро кредитных историй";
         Assertions.assertEquals(expectedMessage, actualMessage);
     }
 
     @Test
     void shouldNotRussianSurnameTest() {
-        driver.get("http://localhost:9999");
         driver.findElement(cssSelector("[data-test-id=name] .input__control")).sendKeys("Kurbatova Yuliya");
         driver.findElement(cssSelector("[data-test-id=phone] .input__control")).sendKeys("+79038190000");
         driver.findElement(cssSelector("[data-test-id=agreement] .checkbox__box")).click();
@@ -98,7 +93,6 @@ public class NegativeTest {
 
     @Test
     void shouldWrongSurnameFormatTest() {
-        driver.get("http://localhost:9999");
         driver.findElement(cssSelector("[data-test-id=name] .input__control")).sendKeys("Юлия К.");
         driver.findElement(cssSelector("[data-test-id=phone] .input__control")).sendKeys("+79038190000");
         driver.findElement(cssSelector("[data-test-id=agreement] .checkbox__box")).click();
@@ -111,7 +105,6 @@ public class NegativeTest {
 
     @Test
     void shouldWrongPhoneFormatTest() {
-        driver.get("http://localhost:9999");
         driver.findElement(cssSelector("[data-test-id=name] .input__control")).sendKeys("Курбатова Юлия");
         driver.findElement(cssSelector("[data-test-id=phone] .input__control")).sendKeys("+7(903)-819-00-00");
         driver.findElement(cssSelector("[data-test-id=agreement] .checkbox__box")).click();
